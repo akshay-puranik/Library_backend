@@ -36,12 +36,6 @@ module.exports = Object.freeze({
     INTERNAL_SERVER_ERROR: 500,
   },
 
-  jwt: {
-    SECRET: "secretfortoken",
-    USER_TOKEN_EXPIRE: 86400,
-    ADMIN_TOKEN_EXPIRE: 86400,
-    EXPIRE: 86400,
-  },
   string_constants: {
     SOME_ERROR_OCCURED: "Some error occurred while retrieving data.",
     INVALID_AUTHORIZATION: "Unauthorized Request",
@@ -49,8 +43,5 @@ module.exports = Object.freeze({
   METHODS: {
     GET: "get",
     POST: "post",
-  },
-  jwt: {
-    EXPIRE: 86400,
-  },
+  }
 });

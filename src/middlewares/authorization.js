@@ -8,7 +8,7 @@ const authorization = (req, res, next) => {
       let user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET_KEY);
       req.body.userid = user.userid;
       next();
-    } catch (error) {
+    } catch (err) {
       return response.sendResponse(
         constant.response_code.INTERNAL_SERVER_ERROR,
         err.message || constant.STRING_CONSTANTS.SOME_ERROR_OCCURED,

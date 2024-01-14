@@ -1,19 +1,12 @@
-const constant = require("../constants/constants");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const generateRefreshToken = (data) => {
   try {
-    let refToken = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET_KEY, {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRY_TIME,
-    });
+    let refToken = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET_KEY);
     return refToken;
   } catch (err) {
-    return response.sendResponse(
-      constant.response_code.INTERNAL_SERVER_ERROR,
-      err.message || constant.STRING_CONSTANTS.SOME_ERROR_OCCURED,
-      null,
-      res
-    );
+    throw new Error(err);
   }
 };
 
@@ -24,32 +17,22 @@ const generateAccessToken = (refreshToken) => {
       process.env.REFRESH_TOKEN_SECRET_KEY
     );
     let accessToken = jwt.sign(
-      refTokenData.process.env.ACCESS_TOKEN_SECRET_KEY,
-      { expiresIn: process.env.ACCESS_TOKEN_EXPIRY_TIME }
+      refTokenData,
+      process.env.ACCESS_TOKEN_SECRET_KEY
     );
     return accessToken;
   } catch (err) {
-    return response.sendResponse(
-      constant.response_code.INTERNAL_SERVER_ERROR,
-      err.message || constant.STRING_CONSTANTS.SOME_ERROR_OCCURED,
-      null,
-      res
-    );
+    throw new Error(err);
   }
 };
 
 const getTokens = (data) => {
   try {
     const refreshToken = generateRefreshToken(data);
-    const accessToken = generateAccessToken(data);
+    const accessToken = generateAccessToken(refreshToken);
     return { accessToken, refreshToken };
   } catch (err) {
-    return response.sendResponse(
-      constant.response_code.INTERNAL_SERVER_ERROR,
-      err.message || constant.STRING_CONSTANTS.SOME_ERROR_OCCURED,
-      null,
-      res
-    );
+    throw new Error(err);
   }
 };
 

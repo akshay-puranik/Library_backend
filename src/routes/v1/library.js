@@ -1,10 +1,13 @@
 var router = require("express").Router();
+const userController = require("../../controllers/user");
 
+router.post("/library/signup", userController.signUp);
+router.post("/library/signin", userController.signIn);
 
-// router.post("/library/signup", );
-// router.post("/library/signin", );
 // (These are public endpoints. Make sure to include the Access token and refresh token in the
 // response body with roles specification)
+
+
 
 // (These are private endpoints. Make sure to setup the Access token in Headers)
 
@@ -20,7 +23,6 @@ var router = require("express").Router();
 // POST /library/book
 // PUT /library/:bookId
 // PATCH /library/:bookId
-
 
 // router.post("/library/update/id", );
 // router.post("/library/activate/id", );

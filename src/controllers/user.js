@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const constant = require("../constants/constants");
+const response = require("../lib/response");
 const { getSingleUser, createUser } = require("../lib/queries/user");
 const { getTokens, generateAccessToken } = require("./jwt");
 
@@ -16,7 +17,7 @@ const signUp = async (req, res) => {
   }
   try {
     const { name, email, password } = req.body;
-    const checkUser = getSingleUser({ email });
+    const checkUser = await getSingleUser({ email });
 
     if (checkUser) {
       return response.sendResponse(
@@ -30,7 +31,7 @@ const signUp = async (req, res) => {
     return response.sendResponse(
       constant.response_code.SUCCESS,
       "User Created Successfully!",
-      template,
+      null,
       res
     );
   } catch (err) {
@@ -56,13 +57,20 @@ const signIn = async (req, res) => {
   }
   try {
     const { email, password } = req.body;
-    const user = getSingleUser({ email, password });
+    const user = await getSingleUser({ email, password });
 
-    if (user) {
-      let { accessToken, refreshToken } = getTokens(user);
+    if (user?.id) {
+      let data = {};
+      data._id = user._id;
+      data.name = user.name;
+      data.email = user.email;
+      data.password = user.password;
+
+      let { accessToken, refreshToken } = getTokens(data);
+
       return response.sendResponse(
         constant.response_code.SUCCESS,
-        "User Created Successfully!",
+        "Sign In Successfull!",
         { accessToken, refreshToken },
         res
       );

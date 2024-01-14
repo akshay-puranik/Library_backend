@@ -1,4 +1,4 @@
-const userModel = require("../models/user");
+const userModel = require("../../models/user");
 
 const getSingleUser = (query) => {
   return userModel.findOne(query);

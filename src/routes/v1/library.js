@@ -4,15 +4,8 @@ const userController = require("../../controllers/user");
 router.post("/library/signup", userController.signUp);
 router.post("/library/signin", userController.signIn);
 
-// (These are public endpoints. Make sure to include the Access token and refresh token in the
-// response body with roles specification)
-
-
-
-// (These are private endpoints. Make sure to setup the Access token in Headers)
-
 // GET /library/books
-// router.get("/library/books", );
+router.get("/library/books", );
 // GET /library/books/:bookId
 // router.get("/library/books/:bookid", );
 // POST /library/checkout/:bookId

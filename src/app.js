@@ -11,6 +11,7 @@ const { dbConnect } = require("../config/dbConnect");
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+require("dotenv").config();
 
 app.use("/", routes);
 

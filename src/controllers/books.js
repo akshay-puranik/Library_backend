@@ -2,6 +2,8 @@ const { validationResult } = require("express-validator");
 const constant = require("../constants/constants");
 const response = require("../lib/response");
 const bookQuery = require("../lib/queries/books");
+const checkoutQuery = require("../lib/queries/checkout");
+const userQuery = require("../lib/queries/user");
 
 const getBooks = async (req, res) => {
   const errors = await validationResult(req);
@@ -102,9 +104,9 @@ const updateBook = async (req, res) => {
     const body = req.body;
     const params = req.params;
 
-    let {bookid} = params;
+    let { bookid } = params;
 
-    let data = await bookQuery.updateBook({_id:bookid},body);
+    let data = await bookQuery.updateBook({ _id: bookid }, body);
     if (!data) {
       return response.sendResponse(
         constant.response_code.RECORD_NOT_FOUND,
@@ -188,25 +190,32 @@ const checkoutBook = async (req, res) => {
     const body = req.body;
     const params = req.params;
 
-    let {bookid} = params;
-    let {userid} = body;
+    let { bookid } = params;
+    let { userid } = body;
+    let { returnDate } = body;
 
-    
-    // let data = await bookQuery.createBook(body);
-    // data = data.toJSON();
+    let newCheckout = {};
+    newCheckout.bookId = bookid;
+    newCheckout.userId = userid;
+    newCheckout.returnDate = returnDate;
+    newCheckout.status = "issued";
 
-    // if (data) {
-    //   return response.sendResponse(
-    //     constant.response_code.SUCCESS,
-    //     `Book Added Successfully`,
-    //     data,
-    //     res
-    //   );
-    // }
+    let data = await checkoutQuery.createCheckout(newCheckout);
+    data = data.toJSON();
+    data.checkoutDate = Math.floor(new Date(data.createdAt).getTime() / 1000);
+
+    if (!data) {
+      return response.sendResponse(
+        constant.response_code.BAD_REQUEST,
+        `Something Went Wrong!`,
+        data,
+        res
+      );
+    }
     return response.sendResponse(
       constant.response_code.SUCCESS,
-      "Success",
-      null,
+      "Book Checked Out Successfully",
+      data,
       res
     );
   } catch (err) {
@@ -234,25 +243,34 @@ const returnBook = async (req, res) => {
     const body = req.body;
     const params = req.params;
 
-    let {bookid} = params;
-    let {userid} = body;
+    let { bookid } = params;
+    let { userid } = body;
 
+    let user = await userQuery.getSingleUser({ _id: userid });
+    let { lateReturnFine } = user;
 
-    // let data = await bookQuery.createBook(body);
-    // data = data.toJSON();
+    let checkout = await checkoutQuery.updateCheckout(
+      {
+        bookId: bookid,
+        userId: userid,
+      },
+      {
+        status: "returned",
+      }
+    );
 
-    // if (data) {
-    //   return response.sendResponse(
-    //     constant.response_code.SUCCESS,
-    //     `Book Added Successfully`,
-    //     data,
-    //     res
-    //   );
-    // }
+    if (!checkout || checkout.status !== "issued") {
+      return response.sendResponse(
+        constant.response_code.BAD_REQUEST,
+        `Invalid User-Book Combination`,
+        null,
+        res
+      );
+    }
     return response.sendResponse(
       constant.response_code.SUCCESS,
-      "Success",
-      null,
+      "Book Returned. Please pay the outstanding fines if any!",
+      { lateReturnFine },
       res
     );
   } catch (err) {
@@ -265,4 +283,11 @@ const returnBook = async (req, res) => {
   }
 };
 
-module.exports = { getBooks, getSingleBook, addBook, updateBook, checkoutBook, returnBook };
+module.exports = {
+  getBooks,
+  getSingleBook,
+  addBook,
+  updateBook,
+  checkoutBook,
+  returnBook,
+};

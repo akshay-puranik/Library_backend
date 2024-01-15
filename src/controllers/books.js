@@ -15,7 +15,12 @@ const getBooks = async (req, res) => {
     );
   }
   try {
-    const books = await bookQuery.getBooks();
+    const query = req.query;
+    let page = query.page || 0;
+    let size = query.size || 8;
+    let skip = page * size;
+    
+    const books = await bookQuery.getBooks({ size, skip });
 
     if (!books) {
       return response.sendResponse(
@@ -119,7 +124,5 @@ const getSingleBook = async (req, res) => {
     );
   }
 };
-
-
 
 module.exports = { getBooks, getSingleBook, addBook };

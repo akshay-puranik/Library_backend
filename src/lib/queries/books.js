@@ -5,12 +5,8 @@ const getSingleBook = async (query) => {
 };
 
 const getBooks = async (query) => {
-  let skip = 5;
-  let pageSize = 4;
-  return await booksModel.aggregate([
-    { $skip: skip },
-    { $limit: pageSize }
-  ])
+  const { skip, size } = query;
+  return await booksModel.aggregate([{ $skip: +skip }, { $limit: +size }]);
 };
 
 const createBook = async (data) => {
@@ -20,5 +16,5 @@ const createBook = async (data) => {
 module.exports = {
   getSingleBook,
   createBook,
-  getBooks
+  getBooks,
 };

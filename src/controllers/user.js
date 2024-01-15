@@ -68,10 +68,12 @@ const signIn = async (req, res) => {
 
       let { accessToken, refreshToken } = getTokens(data);
 
+      delete data.password;
+
       return response.sendResponse(
         constant.response_code.SUCCESS,
         "Sign In Successfull!",
-        { accessToken, refreshToken },
+        { accessToken, refreshToken, userDetails: data },
         res
       );
     }

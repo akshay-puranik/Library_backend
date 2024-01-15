@@ -1,19 +1,20 @@
 var router = require("express").Router();
 const userController = require("../../controllers/user");
+const booksController = require("../../controllers/books");
+const authorization = require("../../middlewares/authorization");
 
 router.post("/library/signup", userController.signUp);
 router.post("/library/signin", userController.signIn);
 
-// GET /library/books
-router.get("/library/books", );
-// GET /library/books/:bookId
-// router.get("/library/books/:bookid", );
-// POST /library/checkout/:bookId
+router.get("/library/books", authorization, booksController.getBooks);
+router.get("/library/books/:bookid", authorization, booksController.getSingleBook);
+
 // router.post("/library/checkout/:bookid", );
 // POST /library/checkout/return-book/:bookId
 // router.post("/library/return-book/:bookid", );
 
 // POST /library/book
+router.post("/library/book", authorization, booksController.addBook);
 // PUT /library/:bookId
 // PATCH /library/:bookId
 

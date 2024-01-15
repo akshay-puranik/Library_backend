@@ -7,7 +7,7 @@ const authorization = (req, res, next) => {
   if (accessToken) {
     try {
       let user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET_KEY);
-      req.body.userid = user.userid;
+      req.body.userid = user?._id;
       next();
     } catch (err) {
       return response.sendResponse(

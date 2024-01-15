@@ -173,4 +173,96 @@ const getSingleBook = async (req, res) => {
   }
 };
 
-module.exports = { getBooks, getSingleBook, addBook, updateBook };
+const checkoutBook = async (req, res) => {
+  const errors = await validationResult(req);
+  if (!errors.isEmpty()) {
+    return response.sendResponse(
+      constant.response_code.BAD_REQUEST,
+      null,
+      null,
+      res,
+      errors
+    );
+  }
+  try {
+    const body = req.body;
+    const params = req.params;
+
+    let {bookid} = params;
+    let {userid} = body;
+
+    
+    // let data = await bookQuery.createBook(body);
+    // data = data.toJSON();
+
+    // if (data) {
+    //   return response.sendResponse(
+    //     constant.response_code.SUCCESS,
+    //     `Book Added Successfully`,
+    //     data,
+    //     res
+    //   );
+    // }
+    return response.sendResponse(
+      constant.response_code.SUCCESS,
+      "Success",
+      null,
+      res
+    );
+  } catch (err) {
+    return response.sendResponse(
+      constant.response_code.INTERNAL_SERVER_ERROR,
+      err.message || constant.STRING_CONSTANTS.SOME_ERROR_OCCURED,
+      null,
+      res
+    );
+  }
+};
+
+const returnBook = async (req, res) => {
+  const errors = await validationResult(req);
+  if (!errors.isEmpty()) {
+    return response.sendResponse(
+      constant.response_code.BAD_REQUEST,
+      null,
+      null,
+      res,
+      errors
+    );
+  }
+  try {
+    const body = req.body;
+    const params = req.params;
+
+    let {bookid} = params;
+    let {userid} = body;
+
+
+    // let data = await bookQuery.createBook(body);
+    // data = data.toJSON();
+
+    // if (data) {
+    //   return response.sendResponse(
+    //     constant.response_code.SUCCESS,
+    //     `Book Added Successfully`,
+    //     data,
+    //     res
+    //   );
+    // }
+    return response.sendResponse(
+      constant.response_code.SUCCESS,
+      "Success",
+      null,
+      res
+    );
+  } catch (err) {
+    return response.sendResponse(
+      constant.response_code.INTERNAL_SERVER_ERROR,
+      err.message || constant.STRING_CONSTANTS.SOME_ERROR_OCCURED,
+      null,
+      res
+    );
+  }
+};
+
+module.exports = { getBooks, getSingleBook, addBook, updateBook, checkoutBook, returnBook };

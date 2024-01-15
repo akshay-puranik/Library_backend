@@ -15,8 +15,7 @@ router.get("/library/books/:bookid", authorization, booksController.getSingleBoo
 
 // POST /library/book
 router.post("/library/book", authorization, booksController.addBook);
-// PUT /library/:bookId
-// PATCH /library/:bookId
+router.put("/library/:bookid", authorization, booksController.updateBook);
 
 // router.post("/library/update/id", );
 // router.post("/library/activate/id", );

@@ -61,9 +61,7 @@ const addBook = async (req, res) => {
     const body = req.body;
 
     let data = await bookQuery.createBook(body);
-    delete data.createdAt;
-    delete data.updatedAt;
-    delete data.__v;
+    data = data.toJSON();
 
     if (data) {
       return response.sendResponse(
@@ -77,6 +75,49 @@ const addBook = async (req, res) => {
       constant.response_code.SUCCESS,
       "Success",
       books,
+      res
+    );
+  } catch (err) {
+    return response.sendResponse(
+      constant.response_code.INTERNAL_SERVER_ERROR,
+      err.message || constant.STRING_CONSTANTS.SOME_ERROR_OCCURED,
+      null,
+      res
+    );
+  }
+};
+
+const updateBook = async (req, res) => {
+  const errors = await validationResult(req);
+  if (!errors.isEmpty()) {
+    return response.sendResponse(
+      constant.response_code.BAD_REQUEST,
+      null,
+      null,
+      res,
+      errors
+    );
+  }
+  try {
+    const body = req.body;
+    const params = req.params;
+
+    let {bookid} = params;
+
+    let data = await bookQuery.updateBook({_id:bookid},body);
+    if (!data) {
+      return response.sendResponse(
+        constant.response_code.RECORD_NOT_FOUND,
+        `Book Update Failed`,
+        data,
+        res
+      );
+    }
+    data = data.toJSON();
+    return response.sendResponse(
+      constant.response_code.SUCCESS,
+      "Success",
+      data,
       res
     );
   } catch (err) {
@@ -105,6 +146,7 @@ const getSingleBook = async (req, res) => {
     const { bookid } = params;
 
     const book = await bookQuery.getSingleBook({ _id: bookid });
+    book = book.toJSON();
 
     if (!book) {
       return response.sendResponse(
@@ -131,4 +173,4 @@ const getSingleBook = async (req, res) => {
   }
 };
 
-module.exports = { getBooks, getSingleBook, addBook };
+module.exports = { getBooks, getSingleBook, addBook, updateBook };

@@ -60,12 +60,7 @@ const signIn = async (req, res) => {
     const user = await getSingleUser({ email, password });
 
     if (user?.id) {
-      let data = {};
-      data._id = user._id;
-      data.name = user.name;
-      data.email = user.email;
-      data.password = user.password;
-
+      let data = user.toJSON();
       let { accessToken, refreshToken } = getTokens(data);
 
       delete data.password;

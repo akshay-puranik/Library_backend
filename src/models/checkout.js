@@ -25,8 +25,6 @@ const checkoutSchema = new mongoose.Schema(
 
 checkoutSchema.methods.toJSON = function () {
   var obj = this.toObject();
-  delete obj.createdAt;
-  delete obj.updatedAt;
   delete obj.__v;
   return obj;
 };

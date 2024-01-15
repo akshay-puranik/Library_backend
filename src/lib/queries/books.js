@@ -13,8 +13,13 @@ const createBook = async (data) => {
   return await booksModel.create(data);
 };
 
+const updateBook = async (query,data) => {
+  return await booksModel.findOneAndUpdate(query,data);
+};
+
 module.exports = {
   getSingleBook,
   createBook,
   getBooks,
+  updateBook
 };

@@ -3,6 +3,7 @@ const constant = require("../constants/constants");
 const response = require("../lib/response");
 const bookQuery = require("../lib/queries/books");
 const checkoutQuery = require("../lib/queries/checkout");
+const userQuery = require("../lib/queries/user");
 
 const getBooks = async (req, res) => {
   const errors = await validationResult(req);
@@ -210,7 +211,7 @@ const checkoutBook = async (req, res) => {
         data,
         res
       );
-    };
+    }
     return response.sendResponse(
       constant.response_code.SUCCESS,
       "Book Checked Out Successfully",
@@ -245,21 +246,31 @@ const returnBook = async (req, res) => {
     let { bookid } = params;
     let { userid } = body;
 
-    // let data = await bookQuery.createBook(body);
-    // data = data.toJSON();
+    let user = await userQuery.getSingleUser({ _id: userid });
+    let { lateReturnFine } = user;
 
-    // if (data) {
-    //   return response.sendResponse(
-    //     constant.response_code.SUCCESS,
-    //     `Book Added Successfully`,
-    //     data,
-    //     res
-    //   );
-    // }
+    let checkout = await checkoutQuery.updateCheckout(
+      {
+        bookId: bookid,
+        userId: userid,
+      },
+      {
+        status: "returned",
+      }
+    );
+
+    if (!checkout || checkout.status !== "issued") {
+      return response.sendResponse(
+        constant.response_code.BAD_REQUEST,
+        `Invalid User-Book Combination`,
+        null,
+        res
+      );
+    }
     return response.sendResponse(
       constant.response_code.SUCCESS,
-      "Success",
-      null,
+      "Book Returned. Please pay the outstanding fines if any!",
+      { lateReturnFine },
       res
     );
   } catch (err) {

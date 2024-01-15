@@ -1,7 +1,7 @@
 const userModel = require("../../models/user");
 
-const getSingleUser = (query) => {
-  return userModel.findOne(query);
+const getSingleUser = async (query) => {
+  return await userModel.findOne(query);
 };
 
 const createUser = async (data) => {

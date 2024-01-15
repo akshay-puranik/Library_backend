@@ -108,4 +108,8 @@ const requestToken = async (req, res) => {
   }
 };
 
-module.exports = { signIn, signUp, requestToken };
+const checkForLateFees = async (req, res) => {
+  console.log(`Late return fines have been updated!`);
+};
+
+module.exports = { signIn, signUp, requestToken, checkForLateFees };

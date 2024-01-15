@@ -8,9 +8,6 @@ router.post("/library/signup", userController.signUp);
 router.post("/library/signin", userController.signIn);
 /* USER AUTH ROUTES */
 
-
-
-
 /* USER BOOKS ROUTES */
 router.get("/library/books", authorization, booksController.getBooks);
 router.get(
@@ -19,9 +16,6 @@ router.get(
   booksController.getSingleBook
 );
 /* USER BOOKS ROUTES */
-
-
-
 
 /* CHECKOUT ROUTES */
 router.post(
@@ -35,9 +29,6 @@ router.post(
   booksController.returnBook
 );
 /* CHECKOUT ROUTES */
-
-
-
 
 /* ADMIN ADDUPDATE BOOKS ROUTES */
 router.post("/library/book", authorization, booksController.addBook);

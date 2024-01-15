@@ -36,7 +36,7 @@ module.exports = Object.freeze({
     INTERNAL_SERVER_ERROR: 500,
   },
 
-  string_constants: {
+  STRING_CONSTANTS: {
     SOME_ERROR_OCCURED: "Some error occurred while retrieving data.",
     INVALID_AUTHORIZATION: "Unauthorized Request",
   },

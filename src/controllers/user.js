@@ -60,18 +60,15 @@ const signIn = async (req, res) => {
     const user = await getSingleUser({ email, password });
 
     if (user?.id) {
-      let data = {};
-      data._id = user._id;
-      data.name = user.name;
-      data.email = user.email;
-      data.password = user.password;
-
+      let data = user.toJSON();
       let { accessToken, refreshToken } = getTokens(data);
+
+      delete data.password;
 
       return response.sendResponse(
         constant.response_code.SUCCESS,
         "Sign In Successfull!",
-        { accessToken, refreshToken },
+        { accessToken, refreshToken, userDetails: data },
         res
       );
     }
@@ -111,4 +108,8 @@ const requestToken = async (req, res) => {
   }
 };
 
-module.exports = { signIn, signUp, requestToken };
+const checkForLateFees = async (req, res) => {
+  console.log(`Late return fines have been updated!`);
+};
+
+module.exports = { signIn, signUp, requestToken, checkForLateFees };

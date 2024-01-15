@@ -3,6 +3,8 @@ const constant = require("../constants/constants");
 const response = require("../lib/response");
 const { getSingleUser, createUser } = require("../lib/queries/user");
 const { getTokens, generateAccessToken } = require("./jwt");
+const checkoutModel = require("../models/checkout");
+const userModel = require("../models/user");
 
 const signUp = async (req, res) => {
   const errors = await validationResult(req);
@@ -108,8 +110,21 @@ const requestToken = async (req, res) => {
   }
 };
 
-const checkForLateFees = async (req, res) => {
-  console.log(`Late return fines have been updated!`);
+const checkForLateFees = async () => {
+  let currentDate = Math.floor(new Date(new Date()).getTime() / 1000);
+
+  const lateCheckouts = await checkoutModel.find({ status: "issued" });
+
+  lateCheckouts.forEach(async (checkout) => {
+    if (currentDate > checkout.returnDate) {
+      let user = await userModel.findById(checkout.userId);
+      let { lateReturnFine } = user;
+      await userModel.updateOne(
+        { _id: checkout.userId },
+        { lateReturnFine: lateReturnFine + 10 }
+      );
+    }
+  });
 };
 
 module.exports = { signIn, signUp, requestToken, checkForLateFees };

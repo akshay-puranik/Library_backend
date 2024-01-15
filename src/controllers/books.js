@@ -19,7 +19,7 @@ const getBooks = async (req, res) => {
     let page = query.page || 0;
     let size = query.size || 8;
     let skip = page * size;
-    
+
     const books = await bookQuery.getBooks({ size, skip });
 
     if (!books) {
@@ -61,13 +61,15 @@ const addBook = async (req, res) => {
     const body = req.body;
 
     let data = await bookQuery.createBook(body);
-    console.log(data);
+    delete data.createdAt;
+    delete data.updatedAt;
+    delete data.__v;
 
     if (data) {
       return response.sendResponse(
         constant.response_code.SUCCESS,
         `Book Added Successfully`,
-        null,
+        data,
         res
       );
     }
@@ -99,9 +101,12 @@ const getSingleBook = async (req, res) => {
     );
   }
   try {
-    const books = await getBooks();
+    const params = req.params;
+    const { bookid } = params;
 
-    if (books) {
+    const book = await bookQuery.getSingleBook({ _id: bookid });
+
+    if (!book) {
       return response.sendResponse(
         constant.response_code.NOT_FOUND,
         `No Books Found!`,
@@ -109,10 +114,11 @@ const getSingleBook = async (req, res) => {
         res
       );
     }
+
     return response.sendResponse(
       constant.response_code.SUCCESS,
       "Success",
-      books,
+      book,
       res
     );
   } catch (err) {

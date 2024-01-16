@@ -74,3 +74,35 @@ curl --location --request PUT 'http://localhost:8090/v1/library/65a4bc72fc98f7aa
     "genre": "Non Fiction"
 }'
 ```
+
+# Protected User Routes
+
+Book List
+```
+curl --location 'http://localhost:8090/v1/library/books?page=0&size=4' \
+--header 'access-token:<ACCESS TOKEN HERE>'
+```
+
+Book Details
+```
+curl --location 'http://localhost:8090/v1/library/books/<BOOK ID HERE>' \
+--header 'access-token:<ACCESS TOKEN HERE>'
+```
+
+Checkout Book
+```
+curl --location 'http://localhost:8090/v1/library/checkout/<BOOK ID HERE>' \
+--header 'access-token:<ACCESS TOKEN HERE>' \
+--header 'Content-Type: application/json' \
+--data '{
+    "returnDate":1707952394
+}
+'
+```
+
+Return Book
+```
+curl --location --request POST 'http://localhost:8090/v1/library/return-book/<BOOK ID HERE>' \
+--header 'access-token:<ACCESS TOKEN HERE>' \
+--data ''
+```

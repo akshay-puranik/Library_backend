@@ -1,0 +1,239 @@
+{
+  "info": {
+    "_postman_id": "709dc6f6-4367-4d0e-8f48-39d3ebc65ebb",
+    "name": "Library Management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21475939"
+  },
+  "item": [
+    {
+      "name": "User Signup",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\":\"new user\",\n    \"email\":\"user@gmail.com\",\n    \"password\":\"newpassword\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{Localhost}}v1/library/signup",
+          "host": ["{{Localhost}}v1"],
+          "path": ["library", "signup"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "User Signin",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\":\"user@gmail.com\",\n    \"password\":\"newpassword\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{Localhost}}v1/library/signin",
+          "host": ["{{Localhost}}v1"],
+          "path": ["library", "signin"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin Add Book",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "access-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWEzZWI5NGJkMGNkNjE2ZGFhN2NjODkiLCJuYW1lIjoibmV3IHVzZXIiLCJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwicGFzc3dvcmQiOiJuZXdwYXNzd29yZCIsImlhdCI6MTcwNTI0Mjc4NX0.-2L5O2jEmBxl4JtU3t4HzLLQMmme4X9pR1XAluo4Hh0",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"New Book\",\n    \"author\": \"Checking JSON\",\n    \"genre\": \"Fiction\",\n    \"publishedOn\": 1504185600,\n    \"availableCopies\": 20,\n    \"totalCopies\": 25\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{Localhost}}v1/library/book",
+          "host": ["{{Localhost}}v1"],
+          "path": ["library", "book"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin Update Book",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "access-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWEzZWI5NGJkMGNkNjE2ZGFhN2NjODkiLCJuYW1lIjoibmV3IHVzZXIiLCJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwicGFzc3dvcmQiOiJuZXdwYXNzd29yZCIsImlhdCI6MTcwNTI0Mjc4NX0.-2L5O2jEmBxl4JtU3t4HzLLQMmme4X9pR1XAluo4Hh0",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Updated Book\",\n    \"author\": \"Checking Update\",\n    \"genre\": \"Non Fiction\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{Localhost}}v1/library/65a4bc72fc98f7aacc98b49f",
+          "host": ["{{Localhost}}v1"],
+          "path": ["library", "65a4bc72fc98f7aacc98b49f"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Books List",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "access-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWEzZWI5NGJkMGNkNjE2ZGFhN2NjODkiLCJuYW1lIjoibmV3IHVzZXIiLCJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwicGFzc3dvcmQiOiJuZXdwYXNzd29yZCIsImlhdCI6MTcwNTI0Mjc4NX0.-2L5O2jEmBxl4JtU3t4HzLLQMmme4X9pR1XAluo4Hh0",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{Localhost}}v1/library/books?page=0&size=4",
+          "host": ["{{Localhost}}v1"],
+          "path": ["library", "books"],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "4"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "User Checkout Book",
+      "request": {
+        "auth": {
+          "type": "apikey"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "access-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWEzZWI5NGJkMGNkNjE2ZGFhN2NjODkiLCJuYW1lIjoibmV3IHVzZXIiLCJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwicGFzc3dvcmQiOiJuZXdwYXNzd29yZCIsImlhdCI6MTcwNTI0Mjc4NX0.-2L5O2jEmBxl4JtU3t4HzLLQMmme4X9pR1XAluo4Hh0",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"returnDate\":1707952394\n}\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{Localhost}}v1/library/checkout/65a4b8c53ec4c395fbf56a4f",
+          "host": ["{{Localhost}}v1"],
+          "path": ["library", "checkout", "65a4b8c53ec4c395fbf56a4f"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "User Return Book",
+      "request": {
+        "auth": {
+          "type": "apikey"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "access-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWEzZWI5NGJkMGNkNjE2ZGFhN2NjODkiLCJuYW1lIjoibmV3IHVzZXIiLCJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwicGFzc3dvcmQiOiJuZXdwYXNzd29yZCIsImlhdCI6MTcwNTI0Mjc4NX0.-2L5O2jEmBxl4JtU3t4HzLLQMmme4X9pR1XAluo4Hh0",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{Localhost}}v1/library/return-book/65a4b8c53ec4c395fbf56a4f",
+          "host": ["{{Localhost}}v1"],
+          "path": ["library", "return-book", "65a4b8c53ec4c395fbf56a4f"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Book By ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "access-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWEzZWI5NGJkMGNkNjE2ZGFhN2NjODkiLCJuYW1lIjoibmV3IHVzZXIiLCJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwicGFzc3dvcmQiOiJuZXdwYXNzd29yZCIsImlhdCI6MTcwNTI0Mjc4NX0.-2L5O2jEmBxl4JtU3t4HzLLQMmme4X9pR1XAluo4Hh0",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{Localhost}}v1/library/books/65a4b8c53ec4c395fbf56a4f",
+          "host": ["{{Localhost}}v1"],
+          "path": ["library", "books", "65a4b8c53ec4c395fbf56a4f"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Test Route",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "access-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWEzZWI5NGJkMGNkNjE2ZGFhN2NjODkiLCJuYW1lIjoibmV3IHVzZXIiLCJlbWFpbCI6InVzZXJAZ21haWwuY29tIiwicGFzc3dvcmQiOiJuZXdwYXNzd29yZCIsImlhdCI6MTcwNTI0Mjc4NX0.-2L5O2jEmBxl4JtU3t4HzLLQMmme4X9pR1XAluo4Hh0",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{Localhost}}v1/library/books/65a4b8c53ec4c395fbf56a4f",
+          "host": ["{{Localhost}}v1"],
+          "path": ["library", "books", "65a4b8c53ec4c395fbf56a4f"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
